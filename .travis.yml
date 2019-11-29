@@ -1,0 +1,30 @@
+dist: xenial
+
+before_install:
+  - export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+  - echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+  - curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  - sudo apt-get update
+  - sudo apt-get -y install google-cloud-sdk
+  - sudo apt-get -y install google-cloud-sdk-app-engine-python
+  
+language: python
+python:
+  - "3.6"
+
+install:
+  - pip install --upgrade google-api-python-client
+  - pip install --upgrade google-cloud-storage
+
+script:
+  - "export GOOGLE_APPLICATION_CREDENTIALS=\"./MyProject.json\""
+  - "chmod +x ./Part2/run.sh"
+  - "./Part2/run.sh"
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
