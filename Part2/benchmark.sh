@@ -1,23 +1,13 @@
-# install docker
-echo "Installing docker..."
-
 sudo apt-get update
 
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+sudo apt-get install build-essential
 
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+sudo apt install git-all
 
-sudo apt-key fingerprint 0EBFCD88
+git clone https://github.com/arihant15/Performance-Evaluation-Benchmark.git
 
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+cd Performance-Evaluation-Benchmark/CPU
 
-sudo apt-get update
+gcc -pthread -o CPUBenchmark CPUBenchmark.c
 
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
-# run docker
-echo "Running docker..."
-
-sudo docker pull hello-world:latest
-
-sudo docker run hello-world
+./CPUBenchmark 100000 10
